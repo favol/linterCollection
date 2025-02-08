@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Collection Postman</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Collection Postman</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="postmanCollection">Fichier JSON :</label>
+            <input type="file" name="postmanCollection" accept=".json" required>
+
+            <label for="responseTime">Temps de réponse moyen (ms) :</label>
+            <input type="number" name="responseTime" value="1000" required>
+
+            <label for="version">Version testée :</label>
+            <input type="text" name="version" placeholder="Ex: v1.0.3">
+
+            <button type="submit">Générer la collection</button>
+        </form>
+    </div>
+</body>
+</html>
