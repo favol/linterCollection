@@ -1,0 +1,4379 @@
+{
+	"info": {
+		"_postman_id": "24ac9c85-a812-4c09-a507-48e7dc036e5b",
+		"name": "ApCV Enrôlement Caisse",
+		"description": "ApCV Enrôlement Caisse REST API pour les AMO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21457591"
+	},
+	"item": [
+		{
+			"name": "status",
+			"item": [
+				{
+					"name": "/status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"status"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/status",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"status"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Control-Cache",
+									"value": "no-store",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache",
+									"description": {
+										"content": "",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"UP\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "ddc",
+			"item": [
+				{
+					"name": "get",
+					"item": [
+						{
+							"name": "Rechercher un DDC",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc/get",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc",
+										"get"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK - DDC trouvé",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"ddc_id\": \"<string>\",\n  \"organisme_amo\": {\n    \"code_regime\": \"<string>\",\n    \"code_caisse\": \"<string>\",\n    \"code_centre\": \"<string>\",\n    \"code_amo\": \"<string>\"\n  },\n  \"creation_date\": \"<dateTime>\",\n  \"expiracy_date\": \"<dateTime>\",\n  \"ddcStates\": [\n    {\n      \"code\": \"<string>\",\n      \"change_datetime\": \"<dateTime>\",\n      \"transition_code\": \"<string>\"\n    },\n    {\n      \"code\": \"<string>\",\n      \"change_datetime\": \"<dateTime>\",\n      \"transition_code\": \"<string>\"\n    }\n  ],\n  \"ddcHistory\": [\n    {\n      \"action_code\": \"<string>\",\n      \"action_wording\": \"<string>\",\n      \"action_date\": \"<dateTime>\",\n      \"responsible\": \"<string>\",\n      \"ddc_state_code\": \"<string>\"\n    },\n    {\n      \"action_code\": \"<string>\",\n      \"action_wording\": \"<string>\",\n      \"action_date\": \"<dateTime>\",\n      \"responsible\": \"<string>\",\n      \"ddc_state_code\": \"<string>\"\n    }\n  ],\n  \"ddc_reason\": \"DISPENSE_PHOTO\",\n  \"locking_agent\": \"<string>\",\n  \"portrait\": \"<string>\",\n  \"idProfilApcv\": \"<string>\"\n}"
+								},
+								{
+									"name": "OK - Pas de DDC pour cet utilisateur",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Forbidden Error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Internal server error",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Service unavailable",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"matricule_individu\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/get",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												"get"
+											]
+										}
+									},
+									"status": "Service Unavailable",
+									"code": 503,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "{ddc_id}",
+					"item": [
+						{
+							"name": "lock",
+							"item": [
+								{
+									"name": "Verrouiller un DDC",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id",
+												"lock"
+											],
+											"variable": [
+												{
+													"key": "ddc_id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"is_locked\": \"<boolean>\",\n  \"lock_expiracy_date\": \"<dateTime>\"\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Forbidden Error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unknown DDC",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "DDC state conflict",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Service unavailable",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"lock\": \"<boolean>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/lock",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"lock"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Service Unavailable",
+											"code": 503,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "expiracyDate",
+							"item": [
+								{
+									"name": "Modifier la date d’expiration d’un DDC",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id",
+												"expiracyDate"
+											],
+											"variable": [
+												{
+													"key": "ddc_id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Forbidden Error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unknown DDC",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "DDC state conflict",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Expiracy date functional error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DATE_EXP_MAX\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Service unavailable",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"expiracy_date\": \"<dateTime>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/expiracyDate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"expiracyDate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Service Unavailable",
+											"code": 503,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "portrait",
+							"item": [
+								{
+									"name": "reinit",
+									"item": [
+										{
+											"name": "Demander à reprendre une photo",
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{bearerToken}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"portrait",
+														"reinit"
+													],
+													"variable": [
+														{
+															"key": "ddc_id",
+															"value": "<string>",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "OK",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "No Content",
+													"code": 204,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Bad request",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Bad Request",
+													"code": 400,
+													"_postman_previewlanguage": "text",
+													"header": [],
+													"cookie": [],
+													"body": ""
+												},
+												{
+													"name": "Unauthorized",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Unauthorized",
+													"code": 401,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+												},
+												{
+													"name": "Forbidden Error",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Forbidden",
+													"code": 403,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+												},
+												{
+													"name": "Unknown DDC",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Not Found",
+													"code": 404,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+												},
+												{
+													"name": "DDC state conflict",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Conflict",
+													"code": 409,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+												},
+												{
+													"name": "Internal server error",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Internal Server Error",
+													"code": 500,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+												},
+												{
+													"name": "Service unavailable",
+													"originalRequest": {
+														"method": "PATCH",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															},
+															{
+																"key": "Authorization",
+																"value": "Bearer <token>",
+																"description": "Added as a part of security scheme: bearer"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/ddc/:ddc_id/portrait/reinit",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"ddc",
+																":ddc_id",
+																"portrait",
+																"reinit"
+															],
+															"variable": [
+																{
+																	"key": "ddc_id"
+																}
+															]
+														}
+													},
+													"status": "Service Unavailable",
+													"code": 503,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "ecData",
+							"item": [
+								{
+									"name": "Transmettre l’état civil et recevoir le résultat du rapprochement des identités",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id",
+												"ecData"
+											],
+											"variable": [
+												{
+													"key": "ddc_id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Forbidden Error",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unknown DDC",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "DDC state conflict",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "EC data functional error",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "[\n  \"EC_GENDER\",\n  \"EC_BIRTH_DATE\"\n]"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Service unavailable",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"ecData\": {\n    \"family_name\": \"<string>\",\n    \"given_name\": \"<string>\",\n    \"birth_date\": \"<dateTime>\",\n    \"birth_country_label\": \"<string>\",\n    \"gender\": \"female\",\n    \"preferred_name\": \"<string>\",\n    \"birth_place_label\": \"<string>\"\n  }\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/ecData",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"ecData"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Service Unavailable",
+											"code": 503,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "validate",
+							"item": [
+								{
+									"name": "Valider un DDC",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id",
+												"validate"
+											],
+											"variable": [
+												{
+													"key": "ddc_id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Forbidden Error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unknown DDC",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "DDC state conflict",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Service unavailable",
+											"originalRequest": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"idProfilApcv\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/validate",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"validate"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Service Unavailable",
+											"code": 503,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "activationCode",
+							"item": [
+								{
+									"name": "Demander un code d'activation du DDC",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{bearerToken}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id",
+												"activationCode"
+											],
+											"variable": [
+												{
+													"key": "ddc_id",
+													"value": "<string>",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "OK",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"validation_code\": \"<string>\",\n  \"validation_code_expiracy_date\": \"<dateTime>\"\n}"
+										},
+										{
+											"name": "Bad request",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "text",
+											"header": [],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Unauthorized",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Forbidden Error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Forbidden",
+											"code": 403,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unknown DDC",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "DDC state conflict",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+										},
+										{
+											"name": "Service unavailable",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "Bearer <token>",
+														"description": "Added as a part of security scheme: bearer"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/ddc/:ddc_id/activationCode",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"ddc",
+														":ddc_id",
+														"activationCode"
+													],
+													"variable": [
+														{
+															"key": "ddc_id"
+														}
+													]
+												}
+											},
+											"status": "Service Unavailable",
+											"code": 503,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Supprimer administrativement un DDC",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc/:ddc_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc",
+										":ddc_id"
+									],
+									"variable": [
+										{
+											"key": "ddc_id",
+											"value": "<string>",
+											"description": "(Required) "
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Bad request",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Forbidden Error",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Unknown DDC",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"DDC_INCONNU\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "DDC state conflict",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Conflict",
+									"code": 409,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Internal server error",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+								},
+								{
+									"name": "Service unavailable",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer <token>",
+												"description": "Added as a part of security scheme: bearer"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"deletion_reason\": \"AUTRE_MOTIF\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/ddc/:ddc_id",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"ddc",
+												":ddc_id"
+											],
+											"variable": [
+												{
+													"key": "ddc_id"
+												}
+											]
+										}
+									},
+									"status": "Service Unavailable",
+									"code": 503,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Créer un DDC",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/ddc",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"ddc"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "OK - DDC créé avec succès",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"ddc_id\": \"<string>\"\n}"
+						},
+						{
+							"name": "Bad request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"AUTHENT_INVALIDE\",\n  \"libelle\": \"<string>\"\n}"
+						},
+						{
+							"name": "Forbidden Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"ACCES_INTERDIT\",\n  \"libelle\": \"<string>\"\n}"
+						},
+						{
+							"name": "Forbidden Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"DDC_NON_VERROUILLE\",\n  \"libelle\": \"<string>\"\n}"
+						},
+						{
+							"name": "Expiracy date functional error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"DATE_EXP_MAX\",\n  \"libelle\": \"<string>\"\n}"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"ERREUR_TECHNIQUE\",\n  \"libelle\": \"<string>\"\n}"
+						},
+						{
+							"name": "Service unavailable",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer <token>",
+										"description": "Added as a part of security scheme: bearer"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"matricule_individu\": \"<string>\",\n  \"ddc_reason\": \"AUTRE_MOTIF\",\n  \"expiracy_date\": \"<dateTime>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/ddc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"ddc"
+									]
+								}
+							},
+							"status": "Service Unavailable",
+							"code": 503,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"SERVICE_INDISPONIBLE\",\n  \"libelle\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://qualif.enrol.sp.apcv.sesam-vitale.fr:2443/wsenrolcaisse/v1"
+		}
+	]
+}

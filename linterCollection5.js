@@ -51,8 +51,8 @@ const generateResponseTests = (responseBody, customTests = [], requestName) => {
 
     Object.keys(parsedBody).forEach((key) => {
         tests.push(`pm.test("[${requestName}] - La réponse contient '${key}'", function () {`);
-        tests.push(`    pm.expect(pm.response.json()).to.have.property('${key}');`);
-        tests.push("});");
+        tests.push(`    pm.expect(pm.response.json()).to.have.property('${key}');});`);
+
     });
 
     customTests.forEach(test => tests.push(test));
