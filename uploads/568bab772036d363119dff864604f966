@@ -1,0 +1,952 @@
+openapi: 3.0.0
+info:
+  title: ApCV mise à jour REST API
+  description: |
+    ### ApCV mise à jour REST APIs
+  version: 1.0.0
+
+servers:
+  - url: https://qualif.apcv.sesam-vitale.fr:2443/wsmaj/v1
+    description: Environnement 'Conso' pour le développement
+  - url: https://qualif.apcv.sesam-vitale.fr:1443/wsmaj/v1
+    description: Environnement 'Intégration' pour les tests d’intégration GIE SESAM-Vitale
+  - url: https://qualif.apcv.sesam-vitale.fr:443/wsmaj/v1
+    description: Environnement de 'Qualification (VN)' pour les tests du CDR CNAMTS
+  - url: https://apcv.sesam-vitale.fr:1443/wsmaj/v1
+    description: Environnement de 'Pré-production'
+  - url: https://apcv.sesam-vitale.fr:443/wsmaj/v1
+    description: Environnement de 'Production'
+
+tags:
+  - name: Evenement
+    description: Evénement transmettre un changement de situation
+  - name: Individu
+    description: Individu
+
+paths:
+  /status:
+    get:
+      operationId: status
+      tags:
+        - Status
+      summary: "Test de vie ou accrochage"
+      responses:
+        '200':
+          description: "OK"
+          headers:
+            Control-Cache:
+              schema:
+                type: string
+                enum: [ no-store ]
+            Pragma:
+              schema:
+                type: string
+                enum: [ no-cache ]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+
+  /evenement/deces:
+    post:
+      operationId: evenementdeces
+      tags:
+        - Evenement
+      summary: "Transmettre un décès"
+      description: |
+        ## Transmettre un décès
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/deces<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementDecesReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /evenement/sortiepuma:
+    post:
+      operationId: evenementsortiepuma
+      tags:
+        - Evenement
+      summary: "Transmettre une Sortie PUMA"
+      description: |
+        ## Transmettre une Sortie PUMA
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/sortiepuma<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementSortiePumaReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /evenement/autonomisation:
+    post:
+      operationId: evenementautonomisation
+      tags:
+        - Evenement
+      summary: "Transmettre une Autonomisation"
+      description: |
+        ## Transmettre une Autonomisation
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/autonomisation<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementAutonomisationReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /evenement/modifidentite:
+    post:
+      operationId: evenementmodifidentite
+      tags:
+        - Evenement
+      summary: "Transmettre une Modification d’Identité"
+      description: |
+        ## Transmettre une Modification d’Identité
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/modifidentite<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementModifIdentiteReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /evenement/mouvementad:
+    post:
+      operationId: evenementmouvementad
+      tags:
+        - Evenement
+      summary: "Transmettre un Mouvement AD"
+      description: |
+        ## Transmettre un Mouvement AD
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/mouvementad<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementMouvementADReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /evenement/changementmatriculeindividu:
+    post:
+      operationId: changementmatriculeindividu
+      tags:
+        - Evenement
+      summary: "Transmettre un Changement de Matricule individu"
+      description: |
+        ## Transmettre un Changement de Matricule individu
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 204 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/evenement/changementmatriculeindividu<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-cert
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementChangementMatriculeIndividuReq'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+  /individus/mutation/entrante:
+    post:
+      operationId: individusmutationentrante
+      tags:
+        - Individu
+      summary: "Transmettre une Mutation entrante"
+      description: |
+        ## Transmettre une Mutation entrante
+        ### Les Headers HTTP de requête
+        | Http header  |Obligatoire | Description |
+        | :----------- |:---------- |:----------- |
+        | X-Request-ID  |NON|Le client peut générer un identifiant unique pour chaque sollicitation HTTP. Cet identifiant unique est utilisée pour tracer la requête.<br> Limité à **40 caractères de la table ASCII**.<br><br>Exemple identifiant unique sur 16 octects encodé en Base64URL :<br>*X-Request-ID: OqedanaGU_TTEOIxX_56qQ* |
+        | giesv-client-agent|NON|Identifie le produit du client sollicitant le service (nom du produit et version).<br> Limité à **200 caractères de la table ASCII**.<br><br>Exemple :<br>*giesv-client-agent: SI AM/1.1 Build/537.36*|
+        |Authorization|OUI|Http header d'autorisation avec le jeton JWT<br>Authorization: Bearer tokenJWT<br>Exemple :<br>*Authorization: Bearer eyJhbGciOiJIUzI1NiIXVCJ9TJV...r7E20RMHrHDcEfxjoYZgeFONFh7HgQ*|
+        ### Les codes statut de réponse http restitués sont :
+        Cet API utilise les status code suivants comme décrit dans la [RFC 2616](https://www.ietf.org/rfc/rfc2616.txt) et la [RFC 6585](https://www.ietf.org/rfc/rfc6585.txt):
+        | Code statut  | Description |
+        | :----------- |:----------- |
+        | 200 | OK - Traitement OK  |
+        | 400 | Bad Request -  la requête est invalide |
+        | 401 | Unauthorized - Une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide |
+        | 403 | Forbidden - Authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé) |
+        | 500 | Internal Server Error - Erreur technique du service  |
+        | 503 | Service Unavailable - Nous pouvons rendre temporairement le service. Merci de refaire une tentative.|
+        ### Requête HTTP exemple :
+        POST /wsmaj/v1/individus/mutation/entrante<br>
+        Content-Type: application/json<br>
+        X-Request-ID: Y47gA1F7lVTaKAcTCUop7Q<br>
+        giesv-client-agent: Monproduit-01.00.3564<br>
+        Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c<br>
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - in: header
+          name: X-Request-ID
+          description: Identifiant unique pour chaque sollicitation HTTP
+          schema:
+            type: string
+            example: Y47gA1F7lVTaKAcTCUop7Q
+        - in: header
+          name: giesv-client-cert
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-client-agent
+          description: Identifie le produit du client
+          schema:
+            type: string
+            example: Monproduit-01.00.3564
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EvenementIndividuMutationEntranteReq'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvenementIndividuMutationEntranteRep'
+        '400':
+          description: la requête est invalide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '401':
+          description: une autorisation est demandée pour accéder à l'API ou l'authentification n'est pas valide
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '403':
+          description: authentification valide mais vous n'êtes pas autorisé (code Amo non autorisé)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '500':
+          description: Erreur technique du service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '503':
+          description: Nous pouvons rendre temporairement le service. Merci de refaire une tentative.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      description: Token JWT d'autorisation
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StatusResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - UP
+
+    ResponseError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - libelle
+            - trace_id
+          properties:
+            code:
+              description: Code principal de l'erreur
+              type: string
+            codeComplementaire:
+              description: Code complementaire de l'erreur
+              type: string
+            libelle:
+              description: Code complementaire de l'erreur
+              type: string
+            trace_id:
+              description: Identifiant de trace de l'erreur. A utiliser par l'appelant pour contacter le support.
+              type: string
+
+    EvenementDecesReq:
+      type: object
+      example:
+        {
+          "evenementDecesReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258"
+          }
+        }
+      required:
+        - evenementDecesReq
+      properties:
+        evenementDecesReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementSortiePumaReq:
+      type: object
+      example:
+        {
+          "evenementSortiePumaReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258"
+          }
+        }
+      required:
+        - evenementSortiePumaReq
+      properties:
+        evenementSortiePumaReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementAutonomisationReq:
+      type: object
+      example:
+        {
+          "evenementAutonomisationReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258"
+          }
+        }
+      required:
+        - evenementAutonomisationReq
+      properties:
+        evenementAutonomisationReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementModifIdentiteReq:
+      type: object
+      example:
+        {
+          "evenementModifIdentiteReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258"
+          }
+        }
+      required:
+        - evenementModifIdentiteReq
+      properties:
+        evenementModifIdentiteReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementMouvementADReq:
+      type: object
+      example:
+        {
+          evenementMouvementADReq: {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258",
+            "matriculeIndividuOD": "1720901451258"
+          }
+        }
+      required:
+        - evenementMouvementADReq
+      properties:
+        evenementMouvementADReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+            - matriculeIndividuOD
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+            matriculeIndividuOD:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementChangementMatriculeIndividuReq:
+      type: object
+      example:
+        {
+          "evenementChangementMatriculeIndividuReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "matriculeIndividu": "1990901451258",
+            "nouveauMatriculeIndividu": "2990901451257"
+          }
+        }
+      required:
+        - evenementChangementMatriculeIndividuReq
+      properties:
+        evenementChangementMatriculeIndividuReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - matriculeIndividu
+            - nouveauMatriculeIndividu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            matriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+            nouveauMatriculeIndividu:
+              description: Matricule individu (NIR ou NIA sur 13 sans clé)
+              type: string
+
+    EvenementIndividuMutationEntranteReq:
+      type: object
+      example:
+        {
+          "evenementIndividuMutationEntranteReq": {
+            "dateApplicationEvenement": "2022-03-15",
+            "individu": {
+              "matriculeIndividu": "1730901451245",
+              "organisme": {
+                "codeRegime": "01",
+                "codeCaisse": "123",
+                "codeCentre": "1234"
+              }
+            }
+          }
+        }
+      required:
+        - evenementIndividuMutationEntranteReq
+      properties:
+        evenementIndividuMutationEntranteReq:
+          type: object
+          required:
+            - dateApplicationEvenement
+            - individu
+          properties:
+            dateApplicationEvenement:
+              description: Date d'application de l'évenement au format AAAA-MM-JJ
+              type: string
+            individu:
+              $ref: './api-model.yaml#/components/schemas/Individu'
+
+    EvenementIndividuMutationEntranteRep:
+      type: object
+      example:
+        {
+          "evenementIndividuMutationEntranteRep": {
+            "individu": {
+              "matriculeIndividu": "1730901451245",
+              "organisme": {
+                "codeRegime": "01",
+                "codeCaisse": "123",
+                "codeCentre": "1234"
+              },
+              "mutation": {
+                "dateMutation": "2022-02-01"
+              },
+              "blocages": [
+                {
+                  "codeMotifBlocage": "SUSPICION_FRAUDE",
+                  "libelleMotifBlocage": "Suspicion de faude",
+                  "dateBlocage": "2022-02-03T06:00:00Z",
+                  "organismeOrigineBlocage": {
+                    "codeRegime": "02",
+                    "codeCaisse": "321",
+                    "codeCentre": "4321"
+                  }
+                },
+                {
+                  "codeMotifBlocage": "NON_AUTORISATION_PARENTALE",
+                  "libelleMotifBlocage": "Non autorisation parentale",
+                  "dateBlocage": "2022-02-03T05:00:00Z",
+                  "datePrevisionnelleDeblocage": "2023-03-04",
+                  "organismeOrigineBlocage": {
+                    "codeRegime": "02",
+                    "codeCaisse": "321",
+                    "codeCentre": "4321"
+                  }
+                }
+              ]
+            },
+            "profilApCv": {
+              "idProfilApCv": "bWFDJJXv1w2kGQ5UXdMVZg",
+              "typeApCv": "R",
+              "numSerie": "123456789012",
+              "dateEnrolement": "2022-02-01T06:00:00Z"
+            }
+          }
+        }
+      required:
+        - evenementIndividuMutationEntranteRep
+      properties:
+        evenementIndividuMutationEntranteRep:
+          type: object
+          required:
+            - individu
+          properties:
+            individu:
+              $ref: './api-model.yaml#/components/schemas/Individu'
+            profilApCv:
+              $ref: './api-model.yaml#/components/schemas/ProfilApCv'
