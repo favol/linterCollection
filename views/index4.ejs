@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimisation de Collection Postman</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 8px; box-sizing: border-box; }
+        .message { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
+        .message.success { background-color: #d4edda; color: #155724; }
+        .message.error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Optimisation de Collection Postman</h1>
+        <% if (message) { %>
+            <div class="message success"><%= message %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="message error"><%= error %></div>
+        <% } %>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="postmanCollection">Collection Postman (JSON)</label>
+                <input type="file" name="postmanCollection" id="postmanCollection" required>
+            </div>
+            <div class="form-group">
+                <label for="version">Version</label>
+                <input type="text" name="version" id="version" placeholder="Ex: V1">
+            </div>
+            <div class="form-group">
+                <label for="baseVariable">Nom de la variable d'environnement pour l'URL</label>
+                <input type="text" name="baseVariable" id="baseVariable" placeholder="Ex: baseUrl2" value="baseUrl" required>
+            </div>
+            <div class="form-group">
+                <label for="responseTime">Temps de réponse maximal (ms)</label>
+                <input type="number" name="responseTime" id="responseTime" value="1000">
+            </div>
+            <div class="form-group">
+                <label for="customTests">Tests personnalisés (un par ligne)</label>
+                <textarea name="customTests" id="customTests" rows="5" placeholder="Ex: pm.test(&quot;Custom test&quot;, function () { pm.expect(true).to.be.true; });"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="concatNames">
+                    Concaténer le nom de la requête avec le nom de la réponse
+                </label>
+            </div>
+            <button type="submit">Optimiser la Collection</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  title: ApCV Enrôlement
+  description: ApCV Enrôlement REST API
+  version: 1.0.0
+servers:
+  - url: 'https://qualif.enrol.sp.apcv.sesam-vitale.fr:2443/wsenrolfc/v1'
+    description: Environnement de 'Conso' pour le développement
+  - url: 'https://qualif.enrol.sp.apcv.sesam-vitale.fr:1443/wsenrolfc/v1'
+    description: Environnement de 'Intégration' pour les tests d’intégration GIE SESAM-Vitale
+  - url: 'https://qualif.enrol.sp.apcv.sesam-vitale:443/wsenrolfc/v1'
+    description: Environnement de 'Qualification (VN)' pour les tests du CDR CNAMTS
+  - url: 'https://enrol.sp.apcv.sesam-vitale.fr:1443/wsenrolfc/v1'
+    description: Environnement de 'Pré-production'
+  - url: 'https://enrol.sp.apcv.sesam-vitale.fr:443/wsenrolfc/v1'
+    description: Environnement de 'Production'
+paths:
+  /status:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers:
+            Control-Cache:
+              schema:
+                type: string
+                enum:
+                  - no-store
+            Pragma:
+              schema:
+                type: string
+                enum:
+                  - no-cache
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+  /initprofilapcv:
+    post:
+      operationId: initprofilapcv
+      tags:
+        - Enrolement
+      summary: Initialisation de l'enrôlement
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: header
+          name: giesv-apcv-empreinte
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-apcv-name
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-apcv-version
+          schema:
+            type: string
+          required: true
+        - in: header
+          name: giesv-apcv-device
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-apcv-elapsed
+          required: true
+          schema:
+            type: integer
+        - in: header
+          name: giesv-apcv-identifiant
+          required: true
+          schema:
+            type: string
+        - in: header
+          name: giesv-apcv-metadata
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitProfilApcvRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Control-Cache:
+              schema:
+                type: string
+                enum:
+                  - no-store
+            Pragma:
+              schema:
+                type: string
+                enum:
+                  - no-cache
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitProfilApcvResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          description: 'Token JWT absent, expiré ou invalide'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: Erreur forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: NIR non eligible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitProfilApcvError'
+        '500':
+          description: Erreur serveur
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+        '503':
+          description: Service temporairement indisponible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceIndisponibleError'
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    StatusResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - UP
+    BadRequestError:
+      type: object
+      required:
+        - code
+        - codeComplementaire
+        - libelle
+      properties:
+        code:
+          type: string
+        codeComplementaire:
+          type: string
+        libelle:
+          type: string
+        titre:
+          type: string
+    InternalServerError:
+      type: object
+      required:
+        - code
+        - codeComplementaire
+        - libelle
+      properties:
+        code:
+          type: string
+          enum:
+            - err_c98_01 # Probleme technique
+        codeComplementaire:
+          type: string
+          enum:
+            - err_c98_01_01 # Service SEIR eligibilité
+            - err_c98_01_04 # Service SEIR Gestion ApCV
+            - err_c98_01_06 # Service Enrolement
+        libelle:
+          type: string
+        titre:
+          type: string
+    ServiceIndisponibleError:
+      type: object
+      required:
+        - code
+        - codeComplementaire
+        - libelle
+      properties:
+        code:
+          type: string
+          enum:
+            - err_c99_01 # Probleme d'acces service
+        codeComplementaire:
+          type: string
+          enum:
+            - err_c99_01_01 # Service SEIR eligibilité
+            - err_c99_01_04 # Service SEIR Gestion ApCV
+            - err_c99_01_06 # Service Enrolement
+        libelle:
+          type: string
+        titre:
+          type: string
+    UnauthorizedError:
+      type: object
+      required:
+        - code
+        - codeComplementaire
+        - libelle
+      properties:
+        code:
+          type: string
+          enum:
+            - err_c00_01 # jeton absent
+            - err_c00_02 # jeton invalide
+            - err_c00_03 # jeton expiré
+        codeComplementaire:
+          type: string
+          enum:
+            - err_c00_01_01 # jeton absent
+            - err_c00_02_01 # jeton invalide
+            - err_c00_02_02 # version invalide.
+            - err_c00_02_03 # claim iss invalide
+            - err_c00_02_04 # claim iat invalide
+            - err_c00_02_05 # claim exp invalide
+            - err_c00_02_06 # signature invalide
+            - err_c00_02_07 # giesv-id-cle invalide ou inconnue
+            - err_c00_03_01 # jeton expire
+        libelle:
+          type: string
+        titre:
+          type: string
+    ForbiddenError:
+      type: object
+      required:
+        - code
+        - codeComplementaire
+        - libelle
+        - duree
+      properties:
+        code:
+          type: string
+          enum:
+            - err_c96_01 # Version d'ApCV obsolète : mise à jour de l'ApCV nécessaire
+            - err_c96_02 # blocage d'un utilisateur et de ses usages (Gestion du Support qui bloque un NIR)
+            - err_c96_03 # Suppression du profil
+            - err_c96_05 # blocage de l'enrôlement
+            - err_c96_06 # Cinematique invalide
+        codeComplementaire:
+          type: string
+          enum:
+            - err_c96_01_01 # Version d'ApCV obsolète : mise à jour de l'ApCV nécessaire
+            - err_c96_02_02 # blocage d'un utilisateur et de ses usages (Gestion du Support qui bloque un NIR)
+            - err_c96_03_01 # Révocation du profil (Gestion du Support qui révoque un profil apcv)
+            - err_c96_03_02 # Suppression du profil
+            - err_c96_05_01 # blocage de l'enrôlement trop de tentatives eligibilité
+            - err_c96_05_02 # blocage de l'enrôlement trop de tentatives  mail
+            - err_c96_05_03 # blocage de l'enrôlement trop de tentatives  extraction et rapprochement identite
+            - err_c96_05_04 # blocage de l'enrôlement preuve du vivant
+            - err_c96_05_05 # blocage de l'enrôlement rapprochement photo
+            - err_c96_06_01 # Cinematique invalide
+        libelle:
+          type: string
+        titre:
+          type: string
+        duree:
+          $ref: profil-apcv-objet-2.0.4.yaml#/components/schemas/Duree
+    InitProfilApcvRequest:
+      description: Corps de la requête d'initialisaiton du profil ApCV
+      type: object
+      required: [ nir, nirSaisi, appFiPresente ]
+      properties:
+        nir:
+          type: string
+          maxLength: 15
+          minLength: 15
+        nirSaisi:
+          type: boolean # true pour saisi, false pour scanné
+        appFiPresente:
+          type: boolean
+    InitProfilApcvResponse:
+      description: Corps de la réponse de l'initialisaiton du profil ApCV
+      type: object
+      required:
+        - acces_token
+        - token_type
+        - expires_in
+        - profilExistant
+        - idProfilApcv
+      properties:
+        acces_token:
+          description: Token JWT
+          type: string
+        token_type:
+          type: string
+          enum:
+            - Bearer
+        expires_in:
+          description: Expiration du token
+          type: number
+        profilExistant:
+          type: boolean
+          description: Profil existant
+        idProfilApcv:
+          $ref: profil-apcv-objet-2.0.4.yaml#/components/schemas/IdProfilApcv
+
+    InitProfilApcvError:
+      description: Erreur nir non elligible
+      type: object
+      required:
+        - code
+        - libelle
+        - titre
+      properties:
+        code:
+          type: string
+          enum:
+            - err_e01_01 # NIR non éligible
+        codeComplementaire:
+          type: string
+          enum:
+            - err_e01_01_01 # NIR non éligible.
+        libelle:
+          type: string
+        titre:
+          type: string
+
+security:
+  - bearerAuth: []
